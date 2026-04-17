@@ -393,6 +393,7 @@ function setLoading(loading) {
   const btn = document.getElementById("btn-register");
   const text = document.getElementById("reg-btn-text");
   const spinner = document.getElementById("reg-btn-spinner");
+  if (!btn || !text || !spinner) return;
   btn.disabled = loading;
   text.textContent = loading ? "Creating account…" : "Create Account";
   spinner.classList.toggle("hidden", !loading);
