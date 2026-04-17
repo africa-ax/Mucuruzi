@@ -17,8 +17,7 @@ import {
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { auth, db } from "../config/firebase.js";
-
+import { auth, db } from "/src/config/firebase.js";
 // ─── ROLES ───────────────────────────────────────────────────
 export const ROLES = {
   MANUFACTURER: "manufacturer",
