@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mucuruzi — Admin Panel</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231352a0'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='800' font-size='20' fill='white'>A</text></svg>" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-600: #1352a0;
+      --blue-500: #1a6fd4;
+      --blue-50:  #eff6ff;
+      --gray-900: #0f172a;
+      --gray-700: #334155;
+      --gray-500: #64748b;
+      --gray-400: #94a3b8;
+      --gray-200: #e2e8f0;
+      --gray-100: #f1f5f9;
+      --gray-50:  #f8fafc;
+      --white:    #ffffff;
+      --success:  #16a34a;
+      --success-bg: #f0fdf4;
+      --success-border: #bbf7d0;
+      --error:    #dc2626;
+      --error-bg: #fef2f2;
+      --error-border: #fecaca;
+      --orange:   #ea580c;
+      --orange-bg:#fff7ed;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+      --font-body:    'Inter', sans-serif;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--gray-50);
+      color: var(--gray-900);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .admin-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .admin-logo {
+      width: 38px;
+      height: 38px;
+      background: var(--blue-600);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .admin-header-info h1 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    .admin-header-info p {
+      font-size: .75rem;
+      color: var(--gray-500);
+    }
+
+    .admin-badge {
+      background: var(--orange-bg);
+      color: var(--orange);
+      border-radius: 100px;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .25rem .65rem;
+    }
+
+    /* ── Main ── */
+    .admin-main {
+      padding: 1.25rem 1rem;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .count-pill {
+      background: var(--blue-50);
+      color: var(--blue-500);
+      border-radius: 100px;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+    }
+
+    /* ── Loading ── */
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1rem;
+      gap: 1rem;
+      color: var(--gray-400);
+      font-size: .875rem;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--gray-200);
+      border-top-color: var(--blue-500);
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Empty State ── */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--gray-400);
+    }
+
+    .empty-state .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: .75rem;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-700);
+      margin-bottom: .35rem;
+    }
+
+    .empty-state p {
+      font-size: .85rem;
+    }
+
+    /* ── Manufacturer Card ── */
+    .mfr-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      margin-bottom: .875rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mfr-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: .875rem;
+    }
+
+    .mfr-avatar {
+      width: 42px;
+      height: 42px;
+      background: var(--blue-50);
+      color: var(--blue-500);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .mfr-card-title {
+      flex: 1;
+      padding: 0 .75rem;
+    }
+
+    .mfr-business-name {
+      font-family: var(--font-display);
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: .15rem;
+    }
+
+    .mfr-owner-name {
+      font-size: .78rem;
+      color: var(--gray-500);
+    }
+
+    .pending-pill {
+      background: var(--orange-bg);
+      color: var(--orange);
+      border-radius: 100px;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: .2rem .55rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Detail Grid */
+    .mfr-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .6rem;
+      margin-bottom: 1rem;
+      padding: .875rem;
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: .15rem;
+    }
+
+    .detail-label {
+      font-size: .68rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .detail-value {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      word-break: break-all;
+    }
+
+    .detail-value--mono {
+      font-family: monospace;
+      font-size: .8rem;
+    }
+
+    /* Registered date */
+    .mfr-date {
+      font-size: .75rem;
+      color: var(--gray-400);
+      margin-bottom: .875rem;
+    }
+
+    /* Action Buttons */
+    .mfr-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .625rem;
+    }
+
+    .btn-approve {
+      height: 42px;
+      background: var(--success);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: .875rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+
+    .btn-approve:hover:not(:disabled) { background: #15803d; }
+    .btn-approve:active:not(:disabled) { transform: scale(.97); }
+    .btn-approve:disabled { opacity: .6; cursor: not-allowed; }
+
+    .btn-reject {
+      height: 42px;
+      background: var(--error-bg);
+      color: var(--error);
+      border: 1.5px solid var(--error-border);
+      border-radius: var(--radius-md);
+      font-size: .875rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+
+    .btn-reject:hover:not(:disabled) { background: #fee2e2; }
+    .btn-reject:active:not(:disabled) { transform: scale(.97); }
+    .btn-reject:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: .75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--white);
+      z-index: 1000;
+      animation: slideUp .25s ease;
+      white-space: nowrap;
+      box-shadow: var(--shadow-md);
+    }
+
+    .toast--success { background: var(--success); }
+    .toast--error   { background: var(--error); }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ── Confirm Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 1rem;
+      animation: fadeIn .15s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 340px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.15);
+      animation: popIn .2s ease;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(.94); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--error-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.4rem;
+    }
+
+    .modal-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      text-align: center;
+      margin-bottom: .5rem;
+    }
+
+    .modal-box p {
+      font-size: .85rem;
+      color: var(--gray-500);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .625rem;
+    }
+
+    .btn-cancel {
+      height: 40px;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: .875rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .btn-cancel:hover { background: var(--gray-200); }
+
+    .btn-confirm-delete {
+      height: 40px;
+      background: var(--error);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: .875rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .btn-confirm-delete:hover { background: #b91c1c; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <div class="admin-logo">A</div>
+      <div class="admin-header-info">
+        <h1>Mucuruzi Admin</h1>
+        <p>Manufacturer Approvals</p>
+      </div>
+    </div>
+    <span class="admin-badge" id="pending-count">Loading…</span>
+  </header>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <div class="section-title">
+      Pending Manufacturers
+      <span class="count-pill" id="count-pill">0</span>
+    </div>
+
+    <div id="list-container">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading pending accounts…</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      onSnapshot,
+      updateDoc,
+      deleteDoc,
+      doc,
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      getAuth,
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyBXSDWakPZYLTbnD-EtINzx1ylybtKMk",
+      authDomain: "ebmrwanda-492ea.firebaseapp.com",
+      projectId: "ebmrwanda-492ea",
+      storageBucket: "ebmrwanda-492ea.firebasestorage.app",
+      messagingSenderId: "231667451559",
+      appId: "1:231667451559:web:a6501ff0f39f6e938f3d82",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    const listEl      = document.getElementById("list-container");
+    const countPill   = document.getElementById("count-pill");
+    const pendingBadge= document.getElementById("pending-count");
+
+    // ── Real-time listener for pending manufacturers ──────────
+    const q = query(
+      collection(db, "users"),
+      where("role",   "==", "manufacturer"),
+      where("status", "==", "pending")
+    );
+
+    onSnapshot(q, (snap) => {
+      const count = snap.size;
+      countPill.textContent   = count;
+      pendingBadge.textContent = count === 0
+        ? "All clear"
+        : `${count} pending`;
+
+      if (count === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">✅</div>
+            <h3>No pending approvals</h3>
+            <p>All manufacturer accounts have been reviewed.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = snap.docs.map((d) => {
+        const u = d.data();
+        const initials = (u.businessName || "?").charAt(0).toUpperCase();
+        const date = u.createdAt
+          ? new Date(u.createdAt.seconds * 1000).toLocaleDateString("en-RW", {
+              day: "numeric", month: "short", year: "numeric",
+            })
+          : "Unknown date";
+
+        return `
+          <div class="mfr-card" id="card-${d.id}">
+            <div class="mfr-card-header">
+              <div class="mfr-avatar">${initials}</div>
+              <div class="mfr-card-title">
+                <div class="mfr-business-name">${u.businessName || "—"}</div>
+                <div class="mfr-owner-name">${u.ownerName || "—"}</div>
+              </div>
+              <span class="pending-pill">Pending</span>
+            </div>
+
+            <div class="mfr-details">
+              <div class="detail-item">
+                <span class="detail-label">Email</span>
+                <span class="detail-value">${u.email || "—"}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Phone</span>
+                <span class="detail-value">${u.phone || "—"}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">TIN Number</span>
+                <span class="detail-value detail-value--mono">${u.tinNumber || "—"}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">SDC Device ID</span>
+                <span class="detail-value detail-value--mono">${u.sdcId || "—"}</span>
+              </div>
+            </div>
+
+            <div class="mfr-date">Registered: ${date}</div>
+
+            <div class="mfr-actions">
+              <button
+                class="btn-approve"
+                onclick="approveUser('${d.id}', '${u.businessName}')"
+              >
+                ✓ Approve
+              </button>
+              <button
+                class="btn-reject"
+                onclick="confirmReject('${d.id}', '${u.businessName}')"
+              >
+                ✕ Reject
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    });
+
+    // ── Approve ───────────────────────────────────────────────
+    window.approveUser = async (uid, name) => {
+      const approveBtn = document.querySelector(`#card-${uid} .btn-approve`);
+      const rejectBtn  = document.querySelector(`#card-${uid} .btn-reject`);
+      if (approveBtn) { approveBtn.disabled = true; approveBtn.textContent = "Approving…"; }
+      if (rejectBtn)  { rejectBtn.disabled  = true; }
+
+      try {
+        await updateDoc(doc(db, "users", uid), { status: "active" });
+        showToast(`✓ ${name} approved successfully`, "success");
+      } catch (err) {
+        showToast("Failed to approve. Try again.", "error");
+        if (approveBtn) { approveBtn.disabled = false; approveBtn.innerHTML = "✓ Approve"; }
+        if (rejectBtn)  { rejectBtn.disabled  = false; }
+      }
+    };
+
+    // ── Reject (with confirmation modal) ─────────────────────
+    window.confirmReject = (uid, name) => {
+      // Remove existing modal if any
+      const existing = document.getElementById("reject-modal");
+      if (existing) existing.remove();
+
+      const modal = document.createElement("div");
+      modal.id = "reject-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = `
+        <div class="modal-box">
+          <div class="modal-icon">🗑️</div>
+          <h3>Reject & Delete?</h3>
+          <p>
+            This will permanently delete <strong>${name}</strong>'s account.
+            This action cannot be undone.
+          </p>
+          <div class="modal-actions">
+            <button class="btn-cancel" onclick="document.getElementById('reject-modal').remove()">
+              Cancel
+            </button>
+            <button class="btn-confirm-delete" onclick="rejectUser('${uid}', '${name}')">
+              Delete
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    };
+
+    // ── Delete user from Firestore ────────────────────────────
+    window.rejectUser = async (uid, name) => {
+      const modal = document.getElementById("reject-modal");
+      if (modal) {
+        const btn = modal.querySelector(".btn-confirm-delete");
+        if (btn) { btn.disabled = true; btn.textContent = "Deleting…"; }
+      }
+
+      try {
+        await deleteDoc(doc(db, "users", uid));
+        if (modal) modal.remove();
+        showToast(`${name} rejected and deleted`, "error");
+      } catch (err) {
+        showToast("Failed to delete. Try again.", "error");
+        if (modal) modal.remove();
+      }
+    };
+
+    // ── Toast ─────────────────────────────────────────────────
+    function showToast(msg, type = "success") {
+      const existing = document.querySelector(".toast");
+      if (existing) existing.remove();
+
+      const toast = document.createElement("div");
+      toast.className = `toast toast--${type}`;
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+  </script>
+
+</body>
+</html>
