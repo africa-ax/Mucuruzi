@@ -4,7 +4,7 @@
 // ============================================================
 
 import { logout } from "/src/auth/Auth.js";
-import { renderHomeTab } from "./HomeTab.js";
+import { renderHomeTab } from "/src/views/dashboard/HomeTab.js";
 
 // ── Tab Definitions Per Role ─────────────────────────────────
 const TABS = {
