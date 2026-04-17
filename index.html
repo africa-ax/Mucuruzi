@@ -3,23 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Mucuruzi — Rwanda's Digital Supply Chain Platform" />
   <title>Mucuruzi</title>
-
-  <!-- Styles -->
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/dashboard.css" />
-
-  <!-- Favicon (simple letter M) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a6fd4'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='800' font-size='20' fill='white'>M</text></svg>" />
 </head>
 <body>
-
-  <!-- App Mount Point -->
   <div id="app"></div>
 
-  <!-- App Bootstrap -->
-  <script type="module" src="src/app.js"></script>
+  <!-- Error display for debugging -->
+  <div id="error-overlay" style="display:none;position:fixed;inset:0;background:#fff;padding:1.5rem;z-index:9999;font-family:monospace;font-size:13px;overflow:auto;color:#dc2626;"></div>
 
+  <script>
+    window.addEventListener('error', function(e) {
+      const el = document.getElementById('error-overlay');
+      el.style.display = 'block';
+      el.innerHTML = '<strong>JS ERROR:</strong><br>' + e.message + '<br><br><strong>File:</strong><br>' + e.filename + '<br><br><strong>Line:</strong> ' + e.lineno;
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      const el = document.getElementById('error-overlay');
+      el.style.display = 'block';
+      el.innerHTML += '<br><br><strong>PROMISE ERROR:</strong><br>' + (e.reason?.message || e.reason || 'Unknown');
+    });
+  </script>
+
+  <script type="module" src="app.js"></script>
 </body>
   </html>
