@@ -249,6 +249,7 @@ function setLoading(loading) {
   const btn = document.getElementById("btn-login");
   const text = document.getElementById("login-btn-text");
   const spinner = document.getElementById("login-btn-spinner");
+  if (!btn || !text || !spinner) return;
   btn.disabled = loading;
   text.textContent = loading ? "Signing in…" : "Sign In";
   spinner.classList.toggle("hidden", !loading);
