@@ -2,7 +2,7 @@
 // RegisterView.js — Mucuruzi Registration Screen
 // ============================================================
 
-import { register, ROLES, BUSINESS_ROLES } from "../../auth/Auth.js";
+import { register, ROLES, BUSINESS_ROLES } from "/src/auth/Auth.js";
 
 export function renderRegisterView(onLoginSuccess) {
   const container = document.getElementById("app");
