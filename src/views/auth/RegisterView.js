@@ -272,7 +272,7 @@ export function renderRegisterView(onLoginSuccess) {
 
   // ── Go to Login ──────────────────────────────────────────────
   document.getElementById("btn-go-login").addEventListener("click", () => {
-    import("./LoginView.js").then((m) => m.renderLoginView(onLoginSuccess));
+    import("/src/views/auth/LoginView.js").then((m) => m.renderLoginView(onLoginSuccess));
   });
 
   // ── Terms Links (placeholders) ───────────────────────────────
