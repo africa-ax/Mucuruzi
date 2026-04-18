@@ -397,4 +397,4 @@ function setLoading(loading) {
   btn.disabled = loading;
   text.textContent = loading ? "Creating account…" : "Create Account";
   spinner.classList.toggle("hidden", !loading);
-    }
+                     }
