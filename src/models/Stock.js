@@ -14,7 +14,6 @@ import {
   collection,
   query,
   where,
-  orderBy,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -52,7 +51,11 @@ export async function addToStock({
     const cleanPrice = parsePrice(sellingPrice);
 
     // ── Singleton stock ID ────────────────────────────────
-    const stockId  = `${ownerId}_${productId}`;
+    // productId format: manufacturerId_itemCode
+    // Extract itemCode (last part after final underscore)
+    // stockId = ownerId_itemCode — prevents double-ownerId when manufacturer owns product
+    const itemCodePart = productId.includes("_") ? productId.split("_").pop() : productId;
+    const stockId  = `${ownerId}_${itemCodePart}`;
     const stockRef = doc(db, "stock", stockId);
     const existing = await getDoc(stockRef);
 
@@ -100,7 +103,8 @@ export async function addToStock({
  */
 export async function deductFromStock(ownerId, productId, quantity) {
   try {
-    const stockId  = `${ownerId}_${productId}`;
+    const itemCodePart2 = productId.includes("_") ? productId.split("_").pop() : productId;
+    const stockId  = `${ownerId}_${itemCodePart2}`;
     const stockRef = doc(db, "stock", stockId);
     const snap     = await getDoc(stockRef);
 
@@ -209,14 +213,12 @@ export async function getStockByOwner(ownerId, stockType = null) {
       q = query(
         collection(db, "stock"),
         where("ownerId",   "==", ownerId),
-        where("stockType", "==", stockType),
-        orderBy("updatedAt", "desc")
+        where("stockType", "==", stockType)
       );
     } else {
       q = query(
         collection(db, "stock"),
-        where("ownerId", "==", ownerId),
-        orderBy("updatedAt", "desc")
+        where("ownerId", "==", ownerId)
       );
     }
 
@@ -238,7 +240,8 @@ export async function getStockByOwner(ownerId, stockType = null) {
  */
 export async function getStockItem(ownerId, productId) {
   try {
-    const stockId = `${ownerId}_${productId}`;
+    const itemCodePart3 = productId.includes("_") ? productId.split("_").pop() : productId;
+    const stockId = `${ownerId}_${itemCodePart3}`;
     const snap    = await getDoc(doc(db, "stock", stockId));
     if (!snap.exists()) return null;
     return { id: snap.id, ...snap.data() };
