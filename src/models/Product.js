@@ -56,7 +56,7 @@ export async function createProduct({
     const cleanName     = brandName.trim();
 
     // ── Generate product ID ──────────────────────────────
-    // Format: manufacturerId_itemCode (readable + unique per manufacturer)
+    // Format: manufacturerId_itemCode (unique per manufacturer)
     const productId = `${manufacturerId}_${rraItem.itemCode}`;
 
     // ── Check if product already exists ─────────────────
@@ -186,4 +186,4 @@ export async function getAllProducts() {
     console.error("[Product] getAllProducts error:", err);
     return [];
   }
-}
+        }
