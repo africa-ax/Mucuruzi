@@ -46,6 +46,17 @@ const AuthService = (() => {
         tinNumber = '', sdcId = '',
       } = userData;
 
+        // ── 1. Register ───────────────────────────────────────────────
+  const register = async (userData) => {
+    let createdAuthUser = null;
+
+    try {
+      const {
+        email, password, businessName,
+        role, phone, district,
+        tinNumber = '', sdcId = '',
+      } = userData;
+
       // Block onAuthStateChanged from firing during registration.
       // Firebase fires it the moment Auth user is created —
       // BEFORE Firestore profile is saved. Without this flag,
@@ -87,7 +98,7 @@ const AuthService = (() => {
 
     } catch (err) {
       _isRegistering = false;
-
+      
       // ── ROLLBACK ──────────────────────────────────────────────
       // If Auth user was created but Firestore save failed,
       // delete the Auth user so they are not stuck.
