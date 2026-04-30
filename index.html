@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0a1628" />
+  <meta name="description" content="Mucuruzi — Rwanda's Digital Supply Chain Platform" />
+
+  <title>Mucuruzi</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- App Root -->
+  <div id="app">
+
+    <!-- Loading Screen -->
+    <div id="app-loader" class="app-loader">
+      <div class="loader-inner">
+        <div class="loader-logo">M</div>
+        <div class="loader-bar"><div class="loader-fill"></div></div>
+        <p class="loader-text">Mucuruzi</p>
+      </div>
+    </div>
+
+    <!-- App Content (injected by router) -->
+    <div id="app-root" class="app-main hidden">
+      <div class="app-content" id="app-content"></div>
+    </div>
+
+  </div>
+
+  <!-- Toast Container (global) -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Modal Container (global) -->
+  <div id="modal-container" class="modal-container"></div>
+
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Config -->
+  <script src="js/config/firebase.js"></script>
+  <script src="js/config/constants.js"></script>
+
+  <!-- Utils -->
+  <script src="js/utils/sanitizer.js"></script>
+  <script src="js/utils/formatters.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/utils/router.js"></script>
+
+  <!-- Models -->
+  <script src="js/models/User.js"></script>
+  <script src="js/models/Product.js"></script>
+  <script src="js/models/Stock.js"></script>
+  <script src="js/models/Order.js"></script>
+  <script src="js/models/Invoice.js"></script>
+  <script src="js/models/CreditNote.js"></script>
+
+  <!-- Services -->
+  <script src="js/services/RRAService.js"></script>
+  <script src="js/services/AuthService.js"></script>
+  <script src="js/services/UserService.js"></script>
+  <script src="js/services/ProductService.js"></script>
+  <script src="js/services/StockService.js"></script>
+  <script src="js/services/OrderService.js"></script>
+  <script src="js/services/InvoiceService.js"></script>
+  <script src="js/services/MarketplaceService.js"></script>
+
+  <!-- Components -->
+  <script src="js/components/Toast.js"></script>
+  <script src="js/components/Modal.js"></script>
+  <script src="js/components/Loader.js"></script>
+  <script src="js/components/Navbar.js"></script>
+  <script src="js/components/Sidebar.js"></script>
+  <script src="js/components/QRCode.js"></script>
+
+  <!-- Views: Auth -->
+  <script src="js/views/AuthView.js"></script>
+
+  <!-- Views: Dashboard -->
+  <script src="js/views/dashboard/DashboardView.js"></script>
+  <script src="js/views/dashboard/ManufacturerDash.js"></script>
+  <script src="js/views/dashboard/DistributorDash.js"></script>
+  <script src="js/views/dashboard/RetailerDash.js"></script>
+  <script src="js/views/dashboard/BuyerDash.js"></script>
+
+  <!-- Views: Products -->
+  <script src="js/views/products/ProductListView.js"></script>
+  <script src="js/views/products/ProductFormView.js"></script>
+
+  <!-- Views: Stock -->
+  <script src="js/views/stock/InventoryView.js"></script>
+  <script src="js/views/stock/RawMaterialsView.js"></script>
+
+  <!-- Views: Orders -->
+  <script src="js/views/orders/OrderListView.js"></script>
+  <script src="js/views/orders/OrderFormView.js"></script>
+  <script src="js/views/orders/OrderDetailView.js"></script>
+  <script src="js/views/orders/WalkInSaleView.js"></script>
+
+  <!-- Views: Invoices -->
+  <script src="js/views/invoices/InvoiceListView.js"></script>
+  <script src="js/views/invoices/InvoiceView.js"></script>
+  <script src="js/views/invoices/CreditNoteView.js"></script>
+
+  <!-- Views: Marketplace -->
+  <script src="js/views/marketplace/MarketplaceView.js"></script>
+  <script src="js/views/marketplace/BusinessProfileView.js"></script>
+  <script src="js/views/marketplace/ProductDetailView.js"></script>
+
+  <!-- Views: Profile -->
+  <script src="js/views/profile/ProfileView.js"></script>
+
+  <!-- App Entry -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
