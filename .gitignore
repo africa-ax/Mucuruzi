@@ -1,0 +1,24 @@
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.production
+
+# Firebase service account key — NEVER commit
+service-account-key.json
+*-service-account.json
+firebase-adminsdk*.json
+
+# Node modules
+node_modules/
+api/node_modules/
+
+# Vercel
+.vercel
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
