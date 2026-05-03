@@ -14,6 +14,17 @@
         </div>
       `;
     });
+    <script>
+    <script>
+    window.addEventListener('unhandledrejection', function(e) {
+      document.body.innerHTML = `
+        <div style="background: black; color: yellow; padding: 20px; font-family: monospace; font-size: 14px; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999; overflow: auto;">
+          <h2>⚠️ SILENT PROMISE FAILED! ⚠️</h2>
+          <p><strong>Reason:</strong> ${e.reason}</p>
+        </div>
+      `;
+    });
+  </script>
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0..." />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
